@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="36685868-23fa-4844-b17c-cea1944db327" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/gauge/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gauge/gauge.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/app-icon-128.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/app-icon-144.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/app-icon-192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/app-icon-32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/app-icon-48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/punchometer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/NuxtLogo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Tutorial.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/VuetifyLogo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/content/hello.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/error.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/inspire.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/v.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/vuetify-logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/NuxtLogo.spec.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="20GqjMrCvqRZVhytvvkIdGUCryr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/temp/generic-sensor-demos/punchmeter/main.js" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/store/main" />
+      <recent name="$PROJECT_DIR$/interfaces" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="36685868-23fa-4844-b17c-cea1944db327" name="Default Changelist" comment="" />
+      <created>1635681406714</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1635681406714</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="716" y="291" width="528" height="400" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1635681989329">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="716" y="291" width="528" height="400" key="#com.intellij.fileTypes.FileTypeChooser/0.1107.1366.741/0.0.1920.1080@0.0.1920.1080" timestamp="1635681989329" />
+    <state x="763" y="247" width="434" height="488" key="FileChooserDialogImpl" timestamp="1635785766122">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="763" y="247" width="434" height="488" key="FileChooserDialogImpl/0.1107.1366.741/0.0.1920.1080@0.0.1920.1080" timestamp="1635785766122" />
+  </component>
+</project>
