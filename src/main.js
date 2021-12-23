@@ -204,9 +204,7 @@ function stop_clicked() {
     setGameText(
         "measuring stopped dtmax:"
         + dt + ", freq: "
-        + freq + ", count datasest before: "
-        + len_datasets + " count datasets after: "
-        + myChart.data.datasets.length
+        + freq
     );
     var accel_data_correct = speedCalculator.accel_data.map(
         function(element) { return element * 0.05; }
