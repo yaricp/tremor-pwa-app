@@ -17,16 +17,10 @@
 
 <body>
   <div class="container" align="center">
-      <div id="intro" class="punchAnimation">
-         <img class="logo" src="images/punchometer.png"/>
-         <div class="readyToPunch">
-            Ready to measure the strength of your punch?
-         </div>
-      </div>
-      <div id="game_text" class="shakeToStart" style="display:none;">
+      <div id="game_text">
             Shake device and find out!
       </div>
-      <div id="measurement" class="shakeToStart" style="display:block;">
+      <div id="measurement">
           <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
       </div>
       <div>
@@ -37,6 +31,7 @@
   <script>
     // Service worker
     if ('serviceWorker' in navigator) {
+        console.log("service worker start");
             window.addEventListener('load', function() {
                     navigator.serviceWorker.register('sw.js').then(function(registration) {
                     }, function(err) {
@@ -44,14 +39,7 @@
                     });
             });
     }
-
-    // Entry point after animation
-    let intro = document.getElementById("intro");
-    function onAnimationEnd() {
-        intro.removeEventListener("animationend", onAnimationEnd);
-        setTimeout(main, 2000);
-    }
-    intro.addEventListener("animationend", onAnimationEnd, false);
+    main();
   </script>
 </body>
 </html>

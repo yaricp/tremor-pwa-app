@@ -31,7 +31,7 @@ class MaxSpeedCalculator {
 
    function onreading() {
      let dt = (this.accel.timestamp - this.t) * 0.001; // In seconds.
-     this.dt_list.push(dt);
+     this.dt_list.push(this.accel.timestamp);
      this.accel_data.push(this.accel.x);
      let vx = this.vx + (this.accel.x + this.ax) / 2 * dt;
      this.vx_data.push(vx);
@@ -101,6 +101,9 @@ class MaxSpeedCalculator {
    this.accel.addEventListener('reading', this.onreading);
    this.accel.addEventListener('error', this.onerror);
    this.timeoutId = setTimeout(this.ontimeout, this.timeout);
+   this.accel_data = [];
+   this.vx_data = [];
+   this.dt_list = [];
  }
 
  stop() {
@@ -111,6 +114,7 @@ class MaxSpeedCalculator {
    }
    this.accel.removeEventListener('reading', this.onreading);
    this.accel.removeEventListener('error', this.onerror);
+
  }
 
 }
@@ -187,20 +191,22 @@ function start_clicked() {
 };
 
 function stop_clicked() {
-
+    var len_datasets = myChart.data.datasets.length;
+    for (var i = 0; i <= len_datasets - 1; i++ ) {
+        myChart.data.datasets.pop();
+    }
     speedCalculator.stop();
     var dt = (
         speedCalculator.dt_list[speedCalculator.dt_list.length - 1]
         - speedCalculator.dt_list[0]
-    );
-    var freq = 1 / (speedCalculator.dt_list[10] - speedCalculator.dt_list[9]);
+    ) * 0.001;
+    var freq = 1 / (dt / speedCalculator.dt_list.length);
     setGameText(
-        "measuring stopped dt:"
+        "measuring stopped dtmax:"
         + dt + ", freq: "
-        + freq + ", count: "
-        + speedCalculator.dt_list.length + " t2: "
-        + speedCalculator.dt_list[10] + " t1: "
-        + speedCalculator.dt_list[9]
+        + freq + ", count datasest before: "
+        + len_datasets + " count datasets after: "
+        + myChart.data.datasets.length
     );
     var accel_data_correct = speedCalculator.accel_data.map(
         function(element) { return element * 0.05; }
@@ -215,7 +221,7 @@ function stop_clicked() {
       borderColor: "green",
       fill: false
     };
-    myChart.data.datasets.pop();
+
     myChart.data.datasets.push(dataset_a);
     myChart.data.datasets.push(dataset_v);
     myChart.data.labels = speedCalculator.dt_list;
@@ -235,7 +241,7 @@ function main() {
   setGameText(game_text.innerText);
   setMeasurement(0);
   function startApp() {
-    acl = new LinearAccelerationSensor({frequency: 60});
+    acl = new LinearAccelerationSensor({frequency: 100});
     speedCalculator = new MaxSpeedCalculator(acl, onresult, generateKickSound);
 
     acl.addEventListener('activate', setToInitialState);
@@ -256,6 +262,7 @@ function main() {
         legend: {display: false}
       }
     });
+    console.log(myChart.data);
     acl.start();
   }
   if ('LinearAccelerationSensor' in window) {
