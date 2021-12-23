@@ -1,0 +1,8 @@
+:443 {
+  bind {$ADDRESS}
+  root * /srv
+  file_server
+  tls internal {
+    on_demand
+  }
+}

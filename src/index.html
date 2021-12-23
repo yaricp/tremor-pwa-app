@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
   <link rel="shortcut icon" sizes="192x192" href="images/app-icon-192.png">
-  <script src="main.js"></script>
-  <script src="gauge/gauge.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="main.js"></script>
 </head>
 
 <body>
@@ -23,19 +23,17 @@
             Ready to measure the strength of your punch?
          </div>
       </div>
-  </div>
-
-  <div id="game" class="game">
       <div id="game_text" class="shakeToStart" style="display:none;">
-              Shake device and find out!
+            Shake device and find out!
       </div>
-      <canvas id="gauge"></canvas>
-      <div id="measurement" class="shakeToStart" style="display:none;">
-        <div id="preview">0</div>
-        <div>km/h</div>
+      <div id="measurement" class="shakeToStart" style="display:block;">
+          <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+      </div>
+      <div>
+          <button id="start">Start</button>
+          <button id="stop">Stop</button>
       </div>
   </div>
-  
   <script>
     // Service worker
     if ('serviceWorker' in navigator) {

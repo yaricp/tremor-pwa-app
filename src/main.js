@@ -2,6 +2,7 @@ var audioContext = new AudioContext();
 var game_text = null;
 var measurement = null;
 var gauge = null;
+var myChart = null;
 var acl = null;
 var speedCalculator = null;
 var quotes = ["Punch not detected", "Great punch!", "Roll with the punches!"];
@@ -17,6 +18,10 @@ class MaxSpeedCalculator {
    this.punchDetected = false;
    this.maxSpeed = 0;
 
+   this.accel_data = [];
+   this.vx_data = [];
+   this.dt_list = [];
+
    this.vx = 0; // Velocity at time t.
    this.ax = 0; // Acceleration at time t.
    this.t = 0;
@@ -26,7 +31,10 @@ class MaxSpeedCalculator {
 
    function onreading() {
      let dt = (this.accel.timestamp - this.t) * 0.001; // In seconds.
+     this.dt_list.push(dt);
+     this.accel_data.push(this.accel.x);
      let vx = this.vx + (this.accel.x + this.ax) / 2 * dt;
+     this.vx_data.push(vx);
      let speed = Math.abs(vx);
 
      const punchTreashold = 3; // m/s
@@ -114,7 +122,6 @@ function setGameText(text) {
 }
 
 function setMeasurement(val) {
-  gauge.set(val);
   measurement.style.display="none";
   measurement.style.display="block";
 }
@@ -174,54 +181,56 @@ function generateKickSound() {
   oscillator.stop(endTime);
 };
 
+function start_clicked() {
+    setGameText("measuring started");
+    speedCalculator.start();
+};
+
+function stop_clicked() {
+
+    speedCalculator.stop();
+    var dt = (
+        speedCalculator.dt_list[speedCalculator.dt_list.length - 1]
+        - speedCalculator.dt_list[0]
+    );
+    var freq = 1 / (speedCalculator.dt_list[10] - speedCalculator.dt_list[9]);
+    setGameText(
+        "measuring stopped dt:"
+        + dt + ", freq: "
+        + freq + ", count: "
+        + speedCalculator.dt_list.length + " t2: "
+        + speedCalculator.dt_list[10] + " t1: "
+        + speedCalculator.dt_list[9]
+    );
+    var accel_data_correct = speedCalculator.accel_data.map(
+        function(element) { return element * 0.05; }
+    );
+    var dataset_a = {
+      data: accel_data_correct,
+      borderColor: "red",
+      fill: false
+    };
+    var dataset_v = {
+      data: speedCalculator.vx_data,
+      borderColor: "green",
+      fill: false
+    };
+    myChart.data.datasets.pop();
+    myChart.data.datasets.push(dataset_a);
+    myChart.data.datasets.push(dataset_v);
+    myChart.data.labels = speedCalculator.dt_list;
+    myChart.update();
+};
 
 function main() {
-  // Create gauge
-  var opts = {
-    angle: 0, // The span of the gauge arc
-    lineWidth: 0.44, // The line thickness
-    radiusScale: 1, // Relative radius
-    pointer: {
-      length: 0.6, // // Relative to gauge radius
-      strokeWidth: 0.035, // The thickness
-      color: '#000000' // Fill color
-    },
-    percentColors: [[0.0, "#a9d70b" ], [0.50, "#f9c802"], [1.0, "#ff0000"]],
-    limitMax: 50,     // If false, max value increases automatically if value > maxValue
-    limitMin: 0,     // If true, the min value of the gauge will be fixed
-    colorStart: '#6FADCF',   // Colors
-    colorStop: '#8FC0DA',    // just experiment with them
-    strokeColor: '#E0E0E0',  // to see which ones work best for you
-    generateGradient: true,
-    highDpiSupport: true,    // High resolution support
-    staticLabels: {
-      font: "10px sans-serif",  // Specifies font
-      labels: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],  // Print labels at these values
-      color: "#000000",  // Optional: Label text color
-      fractionDigits: 0  // Optional: Numerical precision. 0=round off.
-    }
-  };
 
-  var target = document.getElementById('gauge'); // your canvas element
-  let width = window.screen.availWidth / 2;
-  let height = window.screen.availHeight / 2;
-
-  if (width < height) {
-    target.width = height;
-    target.height = width;
-  } else {
-    target.width = width;
-    target.height = height;
-  }
-
-  gauge = new Gauge(target).setOptions(opts);
-  gauge.setTextField(document.getElementById("preview"));
-  gauge.maxValue = 50; // set max gauge value
-  gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-  gauge.animationSpeed = 32; // set animation speed (32 is default value)
-
-  // Show game text element
   game_text = document.getElementById("game_text");
+  start_btn = document.getElementById("start");
+  console.log(start_btn);
+  start_btn.addEventListener("click", start_clicked);
+  stop_btn = document.getElementById("stop");
+  console.log(stop_btn);
+  stop_btn.addEventListener("click", stop_clicked);
   measurement = document.getElementById("measurement");
   setGameText(game_text.innerText);
   setMeasurement(0);
@@ -233,10 +242,24 @@ function main() {
     acl.addEventListener('error', error => {
        setGameText("Cannot fetch data from sensor due to an error.");
     });
+    myChart = new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: [1, 2, 3],
+        datasets: [{
+          data: [860, 1140, 1060],
+          borderColor: "red",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {display: false}
+      }
+    });
     acl.start();
   }
-
   if ('LinearAccelerationSensor' in window) {
+
     navigator.permissions.query({ name: "accelerometer" }).then(result => {
       if (result.state != 'granted') {
         setGameText("Sorry, we're not allowed to access sensors " +
