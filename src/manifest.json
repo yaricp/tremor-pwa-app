@@ -1,7 +1,7 @@
 {
-  "name": "Punch-O-Meter",
-  "short_name": "Punch-O-Meter",
-  "description": "Web application measuring speed of the punch",
+  "name": "Tremor PWA",
+  "short_name": "Tremor PWA",
+  "description": "Web application measuring tremor of hands",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
