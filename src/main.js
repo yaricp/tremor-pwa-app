@@ -40,6 +40,7 @@ class MaxSpeedCalculator {
     a: {x:[], y:[], z:[]},
     v: {x:[], y:[], z:[]}
    }
+   this.accel_mod = [];
 
    this.timeoutId = 0;
    this.timeout = (timeout == null) ? 5000 : timeout;
@@ -58,7 +59,10 @@ class MaxSpeedCalculator {
      this.dt_list.push(this.accel.timestamp);
      this.measure_axis('x', dt);
      this.measure_axis('y', dt);
-     this.measure_axis('z', dt)
+     this.measure_axis('z', dt);
+     this.accel_mod.push(calcVectorMod(
+        this.accel.x, this.accel.y, this.accel.z
+     ));
      this.t = this.accel.timestamp;
    }
 
@@ -110,6 +114,7 @@ class MaxSpeedCalculator {
     a: {x:[], y:[], z:[]},
     v: {x:[], y:[], z:[]}
    };
+   this.accel_mod = [];
    this.dt_list = [];
  }
 
@@ -125,6 +130,10 @@ class MaxSpeedCalculator {
  }
 
 }
+
+function calcVectorMod(x, y, z) {
+    return Math.sqrt(x * x + y * y + z * z);
+};
 
 function setGameText(text) {
   game_text.innerText = text;
@@ -230,9 +239,14 @@ function stop_clicked() {
       fill: false
     };
 
-    myChart.data.datasets.push(dataset_ax);
-    myChart.data.datasets.push(dataset_ay);
-    myChart.data.datasets.push(dataset_az);
+    var dataset_a = {
+      data: speedCalculator.accel_mod,
+      borderColor: "black",
+      fill: false
+    };
+    myChart.data.datasets.push(dataset_a);
+//    myChart.data.datasets.push(dataset_ay);
+//    myChart.data.datasets.push(dataset_az);
     myChart.data.labels = speedCalculator.dt_list;
     myChart.update();
 };
