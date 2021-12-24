@@ -35,12 +35,15 @@ class MaxSpeedCalculator {
    this.ay = 0;
    this.vz = 0; // Velocity at time t.
    this.az = 0;// Acceleration at time t.
+   this.mod_a = 0;
+   this.mod_v = 0;
    this.t = 0;
    this.list_data_axis = {
     a: {x:[], y:[], z:[]},
     v: {x:[], y:[], z:[]}
    }
    this.accel_mod = [];
+   this.velocity_mod = [];
 
    this.timeoutId = 0;
    this.timeout = (timeout == null) ? 5000 : timeout;
@@ -60,9 +63,14 @@ class MaxSpeedCalculator {
      this.measure_axis('x', dt);
      this.measure_axis('y', dt);
      this.measure_axis('z', dt);
-     this.accel_mod.push(calcVectorMod(
+     let mod_a = calcVectorMod(
         this.accel.x, this.accel.y, this.accel.z
-     ));
+     )
+     this.accel_mod.push(mod_a);
+     let mod_v = this.mod_v + (mod_a + this.mod_a) / 2 * dt;
+     this.velocity_mod.push(mod_v);
+     this.mod_a = mod_a;
+     this.mod_v = mod_v;
      this.t = this.accel.timestamp;
    }
 
@@ -102,17 +110,22 @@ class MaxSpeedCalculator {
    this.vy = 0;
    this.vz = 0;
 
+   this.mod_v = 0;
+
    this.ax = this.accel.x;
    this.ay = this.accel.y;
    this.az = this.accel.z;
+   this.mod_a = calcVectorMod(
+        this.accel.x, this.accel.y, this.accel.z
+     );
    this.t = this.accel.timestamp;
 
    this.accel.addEventListener('reading', this.onreading);
    this.accel.addEventListener('error', this.onerror);
    this.timeoutId = setTimeout(this.ontimeout, this.timeout);
    this.list_data_axis = {
-    a: {x:[], y:[], z:[]},
-    v: {x:[], y:[], z:[]}
+     a: {x:[], y:[], z:[]},
+     v: {x:[], y:[], z:[]}
    };
    this.accel_mod = [];
    this.dt_list = [];
@@ -241,10 +254,16 @@ function stop_clicked() {
 
     var dataset_a = {
       data: speedCalculator.accel_mod,
-      borderColor: "black",
+      borderColor: "red",
+      fill: false
+    };
+    var dataset_v = {
+      data: speedCalculator.velocity_mod,
+      borderColor: "green",
       fill: false
     };
     myChart.data.datasets.push(dataset_a);
+    myChart.data.datasets.push(dataset_v);
 //    myChart.data.datasets.push(dataset_ay);
 //    myChart.data.datasets.push(dataset_az);
     myChart.data.labels = speedCalculator.dt_list;
