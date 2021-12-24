@@ -1,4 +1,4 @@
-const CACHE_NAME = "punchmeter";
+const CACHE_NAME = "tremorpwa";
 const CACHE_VERSION = 1;
 
 self.addEventListener('install', event => {
@@ -9,7 +9,7 @@ self.addEventListener('install', event => {
         'sw.js',
         'main.js',
         'styles.css',
-        'images/punchometer.png',
+        'images/hands.jpeg',
       ]);
     })
   );
