@@ -18,43 +18,48 @@ class MaxSpeedCalculator {
    this.punchDetected = false;
    this.maxSpeed = 0;
 
-   this.accel_data = [];
-   this.vx_data = [];
    this.dt_list = [];
 
+   this.ax_data = [];
+   this.vx_data = [];
+
+   this.ay_data = [];
+   this.vy_data = [];
+
+   this.az_data = [];
+   this.vz_data = [];
+
    this.vx = 0; // Velocity at time t.
-   this.ax = 0; // Acceleration at time t.
+   this.ax = 0;
+   this.vy = 0; // Velocity at time t.
+   this.ay = 0;
+   this.vz = 0; // Velocity at time t.
+   this.az = 0;// Acceleration at time t.
    this.t = 0;
+   this.list_data_axis = {
+    a: {x:[], y:[], z:[]},
+    v: {x:[], y:[], z:[]}
+   }
 
    this.timeoutId = 0;
    this.timeout = (timeout == null) ? 5000 : timeout;
 
+   function measure_axis(axis, dt) {
+     //setGameText(axis+ " - "+ this.accel[axis]+ " - "+ this['v'+axis]);
+     this.list_data_axis.a[axis].push(this.accel[axis]);
+     let v = this['v'+axis] + (this.accel[axis] + this['a' + axis]) / 2 * dt;
+     this.list_data_axis.v[axis].push(v);
+     this['a'+axis] = this.accel[axis];
+     this['v'+axis] = v;
+   }
+
    function onreading() {
      let dt = (this.accel.timestamp - this.t) * 0.001; // In seconds.
      this.dt_list.push(this.accel.timestamp);
-     this.accel_data.push(this.accel.x);
-     let vx = this.vx + (this.accel.x + this.ax) / 2 * dt;
-     this.vx_data.push(vx);
-     let speed = Math.abs(vx);
-
-     const punchTreashold = 3; // m/s
-     if (this.maxSpeed < speed && speed >= punchTreashold) {
-       this.maxSpeed = speed;
-       if (!this.punchDetected && this.onpunchdetected) {
-         this.punchDetected = true;
-         this.onpunchdetected();
-       }
-     }
-
-     if (this.maxSpeed > speed) {
-       this.stop();
-       this.onresult();
-       return;
-     }
-
+     this.measure_axis('x', dt);
+     this.measure_axis('y', dt);
+     this.measure_axis('z', dt)
      this.t = this.accel.timestamp;
-     this.ax = this.accel.x;
-     this.vx = vx;
    }
 
    function ontimeout() {
@@ -63,7 +68,7 @@ class MaxSpeedCalculator {
        this.onresult();
      }
    }
-
+   this.measure_axis = measure_axis.bind(this);
    this.onreading = onreading.bind(this);
    this.ontimeout = ontimeout.bind(this);
    this.onerror = this.stop.bind(this);
@@ -101,8 +106,10 @@ class MaxSpeedCalculator {
    this.accel.addEventListener('reading', this.onreading);
    this.accel.addEventListener('error', this.onerror);
    this.timeoutId = setTimeout(this.ontimeout, this.timeout);
-   this.accel_data = [];
-   this.vx_data = [];
+   this.list_data_axis = {
+    a: {x:[], y:[], z:[]},
+    v: {x:[], y:[], z:[]}
+   };
    this.dt_list = [];
  }
 
@@ -202,26 +209,30 @@ function stop_clicked() {
     ) * 0.001;
     var freq = 1 / (dt / speedCalculator.dt_list.length);
     setGameText(
-        "measuring stopped dtmax:"
-        + dt + ", freq: "
-        + freq
+        "measuring stopped"
     );
-    var accel_data_correct = speedCalculator.accel_data.map(
+    var accel_data_correct = speedCalculator.az_data.map(
         function(element) { return element * 0.05; }
     );
-    var dataset_a = {
-      data: accel_data_correct,
+    var dataset_ax = {
+      data: speedCalculator.list_data_axis.v.x,
       borderColor: "red",
       fill: false
     };
-    var dataset_v = {
-      data: speedCalculator.vx_data,
+    var dataset_ay = {
+      data: speedCalculator.list_data_axis.v.y,
       borderColor: "green",
       fill: false
     };
+    var dataset_az = {
+      data: speedCalculator.list_data_axis.v.z,
+      borderColor: "blue",
+      fill: false
+    };
 
-    myChart.data.datasets.push(dataset_a);
-    myChart.data.datasets.push(dataset_v);
+    myChart.data.datasets.push(dataset_ax);
+    myChart.data.datasets.push(dataset_ay);
+    myChart.data.datasets.push(dataset_az);
     myChart.data.labels = speedCalculator.dt_list;
     myChart.update();
 };
