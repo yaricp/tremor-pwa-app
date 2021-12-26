@@ -2,8 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36685868-23fa-4844-b17c-cea1944db327" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.babelrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.production.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gauge/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gauge/gauge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands-128.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands-144.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands-192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands-32.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands-48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/hands.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,10 +38,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../FabLite/inmotion_software/backend/app/anchor_firmware/README.md" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app" />
       <recent name="$PROJECT_DIR$/store/main" />
       <recent name="$PROJECT_DIR$/interfaces" />
     </key>
@@ -52,5 +72,11 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="848" y="282" width="521" height="400" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1640537676149">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="848" y="282" width="521" height="400" key="#com.intellij.fileTypes.FileTypeChooser/0.1107.1366.741/0.0.1920.1080@0.0.1920.1080" timestamp="1640537676149" />
   </component>
 </project>

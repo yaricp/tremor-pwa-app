@@ -1,3 +1,4 @@
+var fft = require('fft-js').fft;
 var audioContext = new AudioContext();
 var game_text = null;
 var measurement = null;
@@ -323,7 +324,7 @@ function onresult() {
 };
 
 function main() {
-
+  console.log(fft);
   game_text = document.getElementById("game_text");
   start_btn = document.getElementById("start");
   console.log(start_btn);
