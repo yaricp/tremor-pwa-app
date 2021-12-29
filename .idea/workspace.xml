@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36685868-23fa-4844-b17c-cea1944db327" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands-128.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands-144.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands-192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands-32.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands-32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands-48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/static/images/hands.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +35,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../FabLite/picneck_algorithm/frontend/layouts/default.vue" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dist/static" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
