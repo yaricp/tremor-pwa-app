@@ -1,68 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tremor PWA</title>
+  <title><%= htmlWebpackPlugin.options.title %></title>
   <meta charset="utf-8">
   <meta name="viewport"
-        content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-  <meta name="description" content="Punch-O-Meter">
+        content="width=device-width, minimum-scale=1">
+  <meta name="description" content="Tremor PWA">
   <meta name="theme-color" content="#0071c5">
   <!-- Origin Trial Token, feature = Generic Sensors, origin = https://intel.github.io, expires = 2018-02-27 -->
   <meta http-equiv="origin-trial"
         data-feature="Generic Sensors"
         data-expires="2018-02-27"
         content="AjL+UlBzLjx+0FPXrML6IMA/Ax9GsO/7rUvV/aaKkh3KknUSwDBgymn0d3NhGeRMNS7FlYD73ernqvZNoqzNMw4AAABWeyJvcmlnaW4iOiJodHRwczovL2ludGVsLmdpdGh1Yi5pbzo0NDMiLCJmZWF0dXJlIjoiR2VuZXJpY1NlbnNvciIsImV4cGlyeSI6MTUxOTczOTAwNX0=">
-  <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
-  <link rel="shortcut icon" sizes="192x192" href="images/hands.jpeg">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="shortcut icon" sizes="192x192" href="static/images/hands.jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src="main.js"></script>
 </head>
 
 <body>
-  <div class="container" align="center" style="width:100%;">
-      <div class="row">
-          <div class="col"><h2>Tremor PWA</h2></div>
-      </div>
-      <div class="row">
-          <div id="game_text" class="col">
-            Shake device and find out!
-          </div>
-      </div>
-      <div class="row">
-          <div id="measurement" class="col">
-              <canvas id="chartAxis" style="width:100%;"></canvas>
-              <canvas id="chartMod" style="width:100%;"></canvas>
-          </div>
-      </div>
-      <div class="row">
-          <div class="col">
-              <button id="start" type="button" class="btn btn-success">Start</button>
-          </div>
-          <div class="col">
-              <button id="clear" type="button" class="btn btn-light">clear</button>
-          </div>
+<div class="container custom_tab_style1_outer">
+  <div class="row">
+      <div class="col-md-12">
+          <h2>Tremor PWA</h2>
       </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+        <button id="start" type="button" class="btn btn-success">Start</button>
+        <button id="clear" type="button" class="btn btn-light">Clear</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs custom_tab_style1" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+                  class="nav-link active"
+                  id="home-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#Results"
+                  type="button"
+                  role="tab"
+                  aria-controls="home"
+                  aria-selected="true">Results</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+                  class="nav-link"
+                  id="curves-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#Curves"
+                  type="button"
+                  role="tab"
+                  aria-controls="curv"
+                  aria-selected="true">Curves</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+                  class="nav-link"
+                  id="fft-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#FFT"
+                  type="button"
+                  role="tab"
+                  aria-controls="fft"
+                  aria-selected="false">FFT</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="Results" role="tabpanel" aria-labelledby="home-tab">
+          <div class="row">
+            <div id="game_text" class="col-md-12">
+              Shake device and find out!
+            </div>
+          </div>
+          <div class="row">
+            <div id="resax" style="width:33%;" >
+            </div>
+            <div id="resay" style="width:33%;" >
+            </div>
+            <div id="resaz" style="width:33%;" >
+            </div>
+          </div>
+          <div class="row">
+            <div id="resvx" style="width:33%;">
+            </div>
+            <div id="resvy" style="width:33%;">
+            </div>
+            <div id="resvz" style="width:33%;">
+            </div>
+          </div>
+          <div class="row">
+            <div id="reslx" style="width:33%;">
+            </div>
+            <div id="resly" style="width:33%;">
+            </div>
+            <div id="reslz" style="width:33%;">
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="FFT" role="tabpanel" aria-labelledby="fft-tab">
+          <div class="row">
+              <div id="fft_charts" class="col-md-12">
+                  <canvas id="fftx" style="width:100%;"></canvas>
+                  <canvas id="ffty" style="width:100%;"></canvas>
+                  <canvas id="fftz" style="width:100%;"></canvas>
+              </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="Curves" role="tabpanel" aria-labelledby="curves-tab">
+          <div class="row">
+            <div id="measurement" class="col-md-12">
+              <canvas id="chartx" style="width:100%;"></canvas>
+              <canvas id="charty" style="width:100%;"></canvas>
+              <canvas id="chartz" style="width:100%;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
           crossorigin="anonymous"></script>
-  <script>
-    // Service worker
-    if ('serviceWorker' in navigator) {
-        console.log("service worker start");
-            window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('sw.js').then(function(registration) {
-                    }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
-    }
 
-    main();
-  </script>
 </body>
 </html>

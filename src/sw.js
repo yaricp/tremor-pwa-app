@@ -7,9 +7,9 @@ self.addEventListener('install', event => {
       return cache.addAll([
         'index.html',
         'sw.js',
-        'main.js',
-        'styles.css',
-        'images/hands.jpeg',
+        'app.bundle.js',
+        'static/css/styles.css',
+        'static/images/hands.jpeg',
       ]);
     })
   );
