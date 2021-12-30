@@ -1,6 +1,7 @@
 var fft = require("fft-js").fft,
 fftUtil = require('fft-js').util;
 var list_axis = ["x", "y", "z"];
+var list_indicators = ["a", "v", "l"];
 var filter_value = 3;
 var pause_measuring = 500;
 var game_text = null;
@@ -231,10 +232,20 @@ function calcDiffExt(ext_list) {
     return list_diff;
 }
 
+function prepareDataForFFT(signal) {
+    while (signal.length > 64) {
+        signal.pop();
+      }
+    return signal;
+}
+
 function getFFT(signal) {
+    setGameText("Signal Length: " + signal.length);
+    signal = prepareDataForFFT(signal);
     let phasors = fft(signal);
     let freq = fftUtil.fftFreq(phasors, 60)
     let magnitudes = fftUtil.fftMag(phasors);
+    setGameText("freq length: " + freq.length);
     return [freq, magnitudes]
 };
 
@@ -268,9 +279,6 @@ function searchFreqMaxMagn(values) {
 }
 
 function getMagnitude(signal) {
-  while (signal.length > 64) {
-    signal.pop();
-  }
   let values = getFFT(signal);
   values = filterFFT(values, filter_value);
   let res = searchFreqMaxMagn(values);
@@ -281,9 +289,6 @@ function getMagnitude(signal) {
 }
 
 function getAverageFreq(signal) {
-  while (signal.length > 64) {
-    signal.pop();
-  }
   let values = getFFT(signal);
   values = filterFFT(values, filter_value);
   let res = searchFreqMaxMagn(values);
@@ -390,37 +395,21 @@ function show_curves() {
 
 function show_fft() {
 
-    for (let axis of list_axis) {
-        const av = average(speedCalculator.list_data_axis.l[axis]);
-        let signal = speedCalculator.list_data_axis.l[axis].map(el => el - av);
-        let fft_l = getFFT(signal);
-        fft_l = filterFFT(fft_l, filter_value);
-        let fft_a = getFFT(speedCalculator.list_data_axis.a[axis]);
-        fft_a = filterFFT(fft_a, filter_value)[1].map(
-            function(element) { return element * 0.001; }
-        );
-        let fft_v = getFFT(speedCalculator.list_data_axis.v[axis]);
-        fft_v = filterFFT(fft_v, filter_value)[1].map(
-            function(element) { return element * 0.05; }
-        );
-        let dataset_a = {
-          data: fft_a,
-          borderColor: "red",
-          fill: false
-        };
-        let dataset_v = {
-          data: fft_v,
-          borderColor: "green",
-          fill: false
-        };
-        let dataset_l = {
-          data: fft_l[1],
-          borderColor: "blue",
-          fill: false
-        };
-        fft_charts[axis].data.datasets.push(dataset_a);
-        fft_charts[axis].data.datasets.push(dataset_v);
-        fft_charts[axis].data.datasets.push(dataset_l);
+    for (let ind of list_indicators) {
+//        const av = average(speedCalculator.list_data_axis.l[axis]);
+//        let signal = speedCalculator.list_data_axis.l[axis].map(el => el - av);
+//        let fft_l = getFFT(signal);
+        for (let axis of list_axis) {
+            let fft = getFFT(speedCalculator.list_data_axis[ind][axis]);
+            fft = filterFFT(fft, filter_value);
+            let dataset = {
+              data: fft,
+              borderColor: "red",
+              fill: false
+            };
+            fft_charts[ind].data.datasets.push(dataset);
+        }
+        
         fft_charts[axis].data.labels = fft_l[0].map(el => el.toFixed(2));
         fft_charts[axis].update();
     }
@@ -492,7 +481,7 @@ function show_results() {
 
 function onresult() {
     clear_clicked();
-    setGameText("measuring stopped");
+    setGameText("measuring stopped: " + speedCalculator.dt_list.length);
 
     show_curves();
     show_fft();
@@ -521,8 +510,8 @@ function main() {
     acl.addEventListener('error', error => {
        setGameText("Cannot fetch data from sensor due to an error.");
     });
-    for (let axis of list_axis) {
-        let chart = new Chart("chart" + axis, {
+    for (let ind of list_indicators) {
+        let chart = new Chart("chart" + ind, {
           type: "line",
           data: {
             labels: [1, 2, 3],
@@ -536,7 +525,7 @@ function main() {
             legend: {display: false}
           }
         });
-        charts[axis] = chart;
+        charts[ind] = chart;
     };
     for (let axis of list_axis) {
         let chart = new Chart("fft" + axis, {
