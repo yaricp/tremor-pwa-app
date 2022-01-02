@@ -25,9 +25,9 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
          test: /\.css$/i,
          use: ['style-loader', 'css-loader'],
        },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+       {
+         test: /\.(png|svg|jpg|jpeg|gif)$/i,
+         type: 'asset/inline'
       },
      ],
    },
@@ -35,6 +35,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
    output: {
      filename: '[name].bundle.js',
      path: path.resolve(__dirname, 'dist'),
+     assetModuleFilename: 'images/[hash][ext][query]',
      clean: true,
    },
  };

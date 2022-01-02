@@ -5,16 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/app.bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/app.bundle.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands-128.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands-144.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands-192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands-32.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands-32.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands-48.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/images/hands.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.common.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.common.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

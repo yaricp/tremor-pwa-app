@@ -1,5 +1,7 @@
 var fft = require("fft-js").fft,
 fftUtil = require('fft-js').util;
+var names_indications = ["Accelerometer", "Velocity", "Coordinates"]
+var colors = ["red", "green", "blue"];
 var list_axis = ["x", "y", "z"];
 var list_indicators = ["a", "v", "l"];
 var filter_value = 3;
@@ -168,14 +170,17 @@ class MainCalculator {
  }
 
  stop() {
-   setGameText("Stopped measuring" + this.list_data_axis.a.x.length);
+   setGameText("123Stopped measuring " + this.list_data_axis.a.x.length);
    this.measuring = false;
+   setGameText("finish stop");
    if (this.timeoutId) {
      clearTimeout(this.timeoutId);
      this.timeoutId = 0;
-   }
+   };
+   ;
    this.accel.removeEventListener('reading', this.onreading);
    this.accel.removeEventListener('error', this.onerror);
+
  }
 
 }
@@ -329,26 +334,30 @@ function setToInitialState() {
 }
 
 function clear_clicked() {
-  for (let axis of list_axis) {
-    let len_datasets = charts[axis].data.datasets.length;
+  setGameText("Clear clicked");
+  let text = "";
+  for (let ind of list_indicators) {
+
+    let len_datasets = charts[ind].data.datasets.length;
+    text = text + len_datasets;
     for (var i = 0; i <= len_datasets - 1; i++ ) {
-        charts[axis].data.datasets.pop();
+        charts[ind].data.datasets.pop();
+
     }
-    charts[axis].update();
-  };
-  for (let axis of list_axis) {
-    let len_datasets = fft_charts[axis].data.datasets.length;
+    charts[ind].update();
+    len_datasets = fft_charts[ind].data.datasets.length;
+    text = text + len_datasets;
     for (var i = 0; i <= len_datasets - 1; i++ ) {
-        fft_charts[axis].data.datasets.pop();
+        fft_charts[ind].data.datasets.pop();
     }
-    fft_charts[axis].update();
+    fft_charts[ind].update();
   };
   for (let axis of list_axis) {
     setResultText("", resultsa[axis]);
     setResultText("", resultsv[axis]);
     setResultText("", resultsl[axis]);
   };
-  setGameText("Ready to measure");
+  setGameText("Ready to measure" + text);
 }
 
 function start_measuring() {
@@ -361,58 +370,48 @@ function start_clicked() {
 };
 
 function show_curves() {
+  setGameText("Curves");
+  for (let ind of list_indicators) {
+    let idx = 0;
     for (let axis of list_axis) {
-        let accel_data_correct = speedCalculator.list_data_axis.a[axis].map(
-            function(element) { return element * 0.005; }
-        );
-        let velocity_data_correct = speedCalculator.list_data_axis.v[axis].map(
-            function(element) { return element * 0.1; }
-        );
-        let dataset_a = {
-          data: accel_data_correct,
-          borderColor: "red",
-          fill: false
-        };
-        let dataset_v = {
-          data: velocity_data_correct,
-          borderColor: "green",
-          fill: false
-        };
-        let dataset_l = {
-          data: speedCalculator.list_data_axis.l[axis],
-          borderColor: "blue",
-          fill: false
-        };
-        charts[axis].data.datasets.push(dataset_a);
-        charts[axis].data.datasets.push(dataset_v);
-        charts[axis].data.datasets.push(dataset_l);
-        charts[axis].data.labels = speedCalculator.dt_list.map(
-            el => ((el - speedCalculator.dt_list[0]) * 0.001).toFixed(2)
-        );
-        charts[axis].update();
+      let dataset = {
+        label: axis,
+        data: speedCalculator.list_data_axis[ind][axis],
+        borderColor: colors[idx],
+        fill: false
+      };
+      idx = idx + 1;
+      charts[ind].data.datasets.push(dataset);
     };
+    charts[ind].data.labels = speedCalculator.dt_list.map(
+      el => ((el - speedCalculator.dt_list[0]) * 0.001).toFixed(2)
+    );
+    charts[ind].update();
+  };
 };
 
 function show_fft() {
-
-    for (let ind of list_indicators) {
+  for (let ind of list_indicators) {
 //        const av = average(speedCalculator.list_data_axis.l[axis]);
 //        let signal = speedCalculator.list_data_axis.l[axis].map(el => el - av);
 //        let fft_l = getFFT(signal);
-        for (let axis of list_axis) {
-            let fft = getFFT(speedCalculator.list_data_axis[ind][axis]);
-            fft = filterFFT(fft, filter_value);
-            let dataset = {
-              data: fft,
-              borderColor: "red",
-              fill: false
-            };
-            fft_charts[ind].data.datasets.push(dataset);
-        }
-        
-        fft_charts[axis].data.labels = fft_l[0].map(el => el.toFixed(2));
-        fft_charts[axis].update();
+    let idx = 0;
+    let fft;
+    for (let axis of list_axis) {
+      fft = getFFT(speedCalculator.list_data_axis[ind][axis]);
+      fft = filterFFT(fft, filter_value);
+      let dataset = {
+        label: axis,
+        data: fft[1],
+        borderColor: colors[idx],
+        fill: false
+      };
+      idx = idx + 1;
+      fft_charts[ind].data.datasets.push(dataset);
     }
+    fft_charts[ind].data.labels = fft[0].map(el => el.toFixed(2));
+    fft_charts[ind].update();
+  };
 };
 
 function show_results() {
@@ -505,47 +504,66 @@ function main() {
   setMeasurement(0);
   function startApp() {
     acl = new LinearAccelerationSensor({frequency: 60});
-    speedCalculator = new MainCalculator(acl, onresult, 1070);
+    speedCalculator = new MainCalculator(acl, onresult, 1100);
+    acl.addEventListener('activate', setToInitialState);
+    acl.addEventListener('error', error => {
+       setGameText("Cannot fetch data from sensor due to an error.");
+    });cl = new LinearAccelerationSensor({frequency: 60});
+    speedCalculator = new MainCalculator(acl, onresult, 1100);
     acl.addEventListener('activate', setToInitialState);
     acl.addEventListener('error', error => {
        setGameText("Cannot fetch data from sensor due to an error.");
     });
+    let idx = 0;
     for (let ind of list_indicators) {
-        let chart = new Chart("chart" + ind, {
+      let chart = new Chart("chart" + ind, {
           type: "line",
           data: {
-            labels: [1, 2, 3],
+            labels: [0],
             datasets: [{
-              data: [860, 1140, 1060],
+              data: [0],
               borderColor: "red",
               fill: false
             }]
           },
           options: {
-            legend: {display: false}
+            legend: { display: true },
+            title: {
+              display: true,
+              text: names_indications[idx]
+            }
           }
-        });
-        charts[ind] = chart;
+      });
+      idx = idx + 1;
+      charts[ind] = chart;
     };
-    for (let axis of list_axis) {
-        let chart = new Chart("fft" + axis, {
+    idx = 0;
+    for (let ind of list_indicators) {
+      let chart = new Chart("fft" + ind, {
           type: "line",
           data: {
-            labels: [1, 2, 3],
+            labels: [0],
             datasets: [{
-              data: [860, 1140, 1060],
+              data: [0],
               borderColor: "red",
               fill: false
             }]
           },
           options: {
-            legend: {display: false}
+            legend: { display: true },
+            title: {
+              display: true,
+              text: names_indications[idx]
+            }
           }
-        });
-        fft_charts[axis] = chart;
+      });
+      idx = idx + 1
+      fft_charts[ind] = chart;
     };
     acl.start();
   }
+
+  // startApp();
   if ('LinearAccelerationSensor' in window) {
 
     navigator.permissions.query({ name: "accelerometer" }).then(result => {
